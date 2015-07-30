@@ -1,6 +1,11 @@
 CHANGES for LIRE
 ================
 
+2015-07-30
+==========
+  - Release version with libraries compatible to ElasticSearch 1.7.1
+  - Upgraded other dependencies
+
 2015-02-13
 ==========
   - Bug fix in LireDemo build file
