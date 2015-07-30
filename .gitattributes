@@ -1,1 +1,19 @@
+# Autodetect text files
 * text=auto
+
+# ...Unless the name matches the following
+# overriding patterns
+
+# Definitively text files 
+*.java text eol=lf
+*.xml text eol=lf
+*.txt text eol=lf
+*.html text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.mf text eol=lf
+
+# Ensure those won't be messed up with
+*.jar binary
+*.jpg binary
+*.png binary
