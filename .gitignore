@@ -10,7 +10,7 @@
 profile
 
 # Package Files #
-*.jar
+# *.jar
 *.war
 *.ear
 
@@ -36,7 +36,7 @@ target/*
 .settings/*
 testindextest/*
 index-large-new/*
-*.obj
+#*.obj
 duplicate__*
 bovw-test/*
 index-*/*
@@ -46,3 +46,7 @@ out.png
 results-*/*
 textindextest/*
 wang-index-*/*
+
+#IntelliJ
+.idea
+*.iml
