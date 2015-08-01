@@ -49,7 +49,7 @@
 
 	<groupId>com.endource</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.6-M1</version>
+	<version>0.9.6-M2</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
