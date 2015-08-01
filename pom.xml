@@ -71,6 +71,13 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
+	<repositories>
+		<repository>
+			<id>endource</id>
+			<url>https://dl.bintray.com/endource/maven/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -102,16 +109,12 @@
         <dependency>
             <groupId>com.stromberglabs</groupId>
             <artifactId>jopensurf</artifactId>
-            <version>unversioned</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/jopensurf.jar</systemPath>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.opencv</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.11</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/opencv-2411.jar</systemPath>
         </dependency>
 	</dependencies>
 
