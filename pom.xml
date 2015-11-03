@@ -1,74 +1,60 @@
-<!--
-  ~ This file is part of the LIRE project: http://www.semanticmetadata.net/lire
-  ~ LIRE is free software; you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation; either version 2 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ LIRE is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with LIRE; if not, write to the Free Software
-  ~ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  ~
-  ~ We kindly ask you to refer the any or one of the following publications in
-  ~ any publication mentioning or employing Lire:
-  ~
-  ~ Lux Mathias, Savvas A. Chatzichristofis. Lire: Lucene Image Retrieval ~
-  ~ An Extensible Java CBIR Library. In proceedings of the 16th ACM International
-  ~ Conference on Multimedia, pp. 1085-1088, Vancouver, Canada, 2008
-  ~ URL: http://doi.acm.org/10.1145/1459359.1459577
-  ~
-  ~ Lux Mathias. Content Based Image Retrieval with LIRE. In proceedings of the
-  ~ 19th ACM International Conference on Multimedia, pp. 735-738, Scottsdale,
-  ~ Arizona, USA, 2011
-  ~ URL: http://dl.acm.org/citation.cfm?id=2072432
-  ~
-  ~ Mathias Lux, Oge Marques. Visual Information Retrieval using Java and LIRE
-  ~ Morgan & Claypool, 2013
-  ~ URL: http://www.morganclaypool.com/doi/abs/10.2200/S00468ED1V01Y201301ICR025
-  ~
-  ~ Copyright statement:
-  ~ ~~~~~~~~~~~~~~~~~~~~
-  ~ (c) 2002-2013 by Mathias Lux (mathias@juggle.at)
-  ~     http://www.semanticmetadata.net/lire, http://www.lire-project.net
-  -->
+<!-- ~ This file is part of the LIRE project: http://www.semanticmetadata.net/lire 
+	~ LIRE is free software; you can redistribute it and/or modify ~ it under 
+	the terms of the GNU General Public License as published by ~ the Free Software 
+	Foundation; either version 2 of the License, or ~ (at your option) any later 
+	version. ~ ~ LIRE is distributed in the hope that it will be useful, ~ but 
+	WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY 
+	or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU General Public License 
+	for more details. ~ ~ You should have received a copy of the GNU General 
+	Public License ~ along with LIRE; if not, write to the Free Software ~ Foundation, 
+	Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA ~ ~ We kindly 
+	ask you to refer the any or one of the following publications in ~ any publication 
+	mentioning or employing Lire: ~ ~ Lux Mathias, Savvas A. Chatzichristofis. 
+	Lire: Lucene Image Retrieval ~ ~ An Extensible Java CBIR Library. In proceedings 
+	of the 16th ACM International ~ Conference on Multimedia, pp. 1085-1088, 
+	Vancouver, Canada, 2008 ~ URL: http://doi.acm.org/10.1145/1459359.1459577 
+	~ ~ Lux Mathias. Content Based Image Retrieval with LIRE. In proceedings 
+	of the ~ 19th ACM International Conference on Multimedia, pp. 735-738, Scottsdale, 
+	~ Arizona, USA, 2011 ~ URL: http://dl.acm.org/citation.cfm?id=2072432 ~ ~ 
+	Mathias Lux, Oge Marques. Visual Information Retrieval using Java and LIRE 
+	~ Morgan & Claypool, 2013 ~ URL: http://www.morganclaypool.com/doi/abs/10.2200/S00468ED1V01Y201301ICR025 
+	~ ~ Copyright statement: ~ ~~~~~~~~~~~~~~~~~~~~ ~ (c) 2002-2013 by Mathias 
+	Lux (mathias@juggle.at) ~ http://www.semanticmetadata.net/lire, http://www.lire-project.net -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-  
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.semanticmetadata</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.4-SNAPSHOT</version>
+	<version>0.9.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
 	<description>Lucene Image Retrieval</description>
 	<url>http://www.semanticmetadata.net/</url>
 	<inceptionYear>2012</inceptionYear>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
 		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
-        <build.timestamp>${maven.build.timestamp}</build.timestamp>
-        <build.number />
+		<build.timestamp>${maven.build.timestamp}</build.timestamp>
+		<opencv.jar>${basedir}/lib/opencv-2411.jar</opencv.jar>
+		<lucene.version>5.3.1</lucene.version>
+		<build.number />
 	</properties>
-	
+
 	<prerequisites>
-        <maven>3.0.0</maven>
-    </prerequisites>
+		<maven>3.0.0</maven>
+	</prerequisites>
 
 	<dependencies>
 		<dependency>
@@ -77,21 +63,20 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
-			<version>4.10.2</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
-			<version>4.10.2</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
-			<version>4.10.2</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -99,14 +84,33 @@
 			<version>3.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.stromberglabs</groupId>
+			<groupId>com.sangupta</groupId>
 			<artifactId>jopensurf</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-backward-codecs</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>opencv</artifactId>
+			<version>2.4.1.1</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/jopensurf.jar</systemPath>
+			<systemPath>${opencv.jar}</systemPath>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<finalName>lire</finalName>
 		<plugins>
@@ -115,8 +119,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<argLine>-Djava.library.path=${project.build.directory}/classes/opencv/x64</argLine>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
@@ -129,16 +134,25 @@
 
 			<!-- Generate the project-sources.jar for OSS repository -->
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
-            </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<configuration>
+					<argLine>-Djava.library.path=${project.build.directory}/test-classes/opencv/x64</argLine>
+				</configuration>
+			</plugin>			
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
-			<id>release</id>	
+			<id>release</id>
 			<build>
 				<plugins>
 					<!-- Sign the Maven artifacts -->
@@ -154,7 +168,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>			
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

@@ -17,7 +17,7 @@
  * We kindly ask you to refer the any or one of the following publications in
  * any publication mentioning or employing Lire:
  *
- * Lux Mathias, Savvas A. Chatzichristofis. Lire: Lucene Image Retrieval �
+  * Lux Mathias, Savvas A. Chatzichristofis. Lire: Lucene Image Retrieval -
  * An Extensible Java CBIR Library. In proceedings of the 16th ACM International
  * Conference on Multimedia, pp. 1085-1088, Vancouver, Canada, 2008
  * URL: http://doi.acm.org/10.1145/1459359.1459577
@@ -34,8 +34,15 @@
 
 package net.semanticmetadata.lire.imageanalysis.features.local.opencvfeatures;
 
-import net.semanticmetadata.lire.imageanalysis.features.LocalFeature;
-import net.semanticmetadata.lire.imageanalysis.features.LocalFeatureExtractor;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -45,14 +52,8 @@ import org.opencv.features2d.FeatureDetector;
 import org.opencv.features2d.KeyPoint;
 import org.opencv.imgproc.Imgproc;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import net.semanticmetadata.lire.imageanalysis.features.LocalFeature;
+import net.semanticmetadata.lire.imageanalysis.features.LocalFeatureExtractor;
 
 /**
  * Created by Nektarios on 1/10/2014.

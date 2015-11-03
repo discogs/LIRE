@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>AllExtractors</comment>
+<entry key="4.codebook.2">./src/test/resources/codebooks/SIMPLEdetCVSURFCEDD128</entry>
+<entry key="4.codebook.1">./src/test/resources/codebooks/SIMPLEdetCVSURFCEDD32</entry>
+<entry key="2.extractor">net.semanticmetadata.lire.imageanalysis.features.global.FCTH</entry>
+<entry key="3.codebook.2">./src/test/resources/codebooks/CvSURF128</entry>
+<entry key="3.codebook.1">./src/test/resources/codebooks/CvSURF32</entry>
+<entry key="0.info.2">128</entry>
+<entry key="0.info.1">32</entry>
+<entry key="0.info.0">net.semanticmetadata.lire.aggregators.BOVW</entry>
+<entry key="1.extractor">net.semanticmetadata.lire.imageanalysis.features.global.CEDD</entry>
+<entry key="4">simple</entry>
+<entry key="3">local</entry>
+<entry key="4.extractor">net.semanticmetadata.lire.imageanalysis.features.global.CEDD</entry>
+<entry key="2">global</entry>
+<entry key="4.detector">detCVSURF</entry>
+<entry key="3.extractor">net.semanticmetadata.lire.imageanalysis.features.local.opencvfeatures.CvSurfExtractor</entry>
+<entry key="1">global</entry>
+<entry key="0">info</entry>
+</properties>
