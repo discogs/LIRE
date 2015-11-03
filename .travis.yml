@@ -2,6 +2,3 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk7
-env:
-  - DESC="Build without test (they not work yet)"
-  - CMD1="mvn clean install -Dmaven.test.skip=true "
