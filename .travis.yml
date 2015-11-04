@@ -6,4 +6,5 @@ jdk:
 
 script:
   - ls /home/travis/build/robyrobot/LIRE/lib/opencv/x64/*
+  - mvn test 
   
