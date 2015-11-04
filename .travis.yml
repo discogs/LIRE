@@ -5,5 +5,5 @@ jdk:
   - oraclejdk8
 
 script:  
-  - echo mvn test -B (disable all test)
+  - echo "mvn test -B (disable all test)"
   
