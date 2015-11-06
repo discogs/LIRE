@@ -4,7 +4,8 @@ jdk:
   - oraclejdk7
   - oraclejdk8
 
-script:  
+before_install:
   - ./deploy-dependencies.sh
+script:  
   - mvn test -B
   
