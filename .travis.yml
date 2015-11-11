@@ -7,5 +7,6 @@ jdk:
 before_install:
   - ./deploy-dependencies.sh
 script:  
-  - mvn test -B
+  - # mvn test -B
+  
   
