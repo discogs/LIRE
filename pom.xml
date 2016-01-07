@@ -47,14 +47,14 @@
   
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.endource</groupId>
+	<groupId>com.discogs</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.6-M3</version>
+	<version>0.9.7-DISCOGS-M1</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
 	<description>Lucene Image Retrieval</description>
-	<url>http://github.com/endource/lire</url>
+	<url>http://github.com/discogs/lire</url>
 	<inceptionYear>2012</inceptionYear>
 	
 	<properties>
@@ -77,6 +77,12 @@
 			<url>https://dl.bintray.com/endource/maven/</url>
 		</repository>
 	</repositories>
+
+    <scm>
+        <connection>scm:git:git@github.com:discogs/lire.git</connection>
+        <developerConnection>scm:git:git@github.com:discogs/lire.git</developerConnection>
+        <url>http://github.com/discogs/lire</url>
+    </scm>
 
 	<dependencies>
 		<dependency>
