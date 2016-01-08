@@ -43,6 +43,7 @@ package net.semanticmetadata.lire;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -128,7 +129,6 @@ public interface DocumentBuilder {
     public static final String FIELD_NAME_BOVW_VECTOR = "BOVWVec";
     public static final String FIELD_NAME_VLAD = "VLAD";
     public static final String FIELD_NAME_VLAD_VECTOR = "VLADVec";
-
 
 
     /**
