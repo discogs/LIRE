@@ -47,9 +47,9 @@
   
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.discogs</groupId>
+	<groupId>com.discogs</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.7-DISCOGS-M5</version>
+	<version>0.9.7-DISCOGS-M6</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
