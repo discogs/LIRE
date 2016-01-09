@@ -49,7 +49,7 @@
 
 	<groupId>com.github.discogs</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.7-DISCOGS-M3</version>
+	<version>0.9.7-DISCOGS-M4</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
