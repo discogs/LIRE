@@ -2,7 +2,9 @@ package net.semanticmetadata.lire.imageanalysis;
 
 import net.semanticmetadata.lire.DocumentBuilder;
 
-import net.semanticmetadata.lire.imageanalysis.opencvfeatures.CvSurfFeature;
+import net.semanticmetadata.lire.utils.SerializationUtils;
+import net.semanticmetadata.lire.utils.MetricsUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -19,21 +21,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by seanwolfe on 1/6/16.
  */
 public class ORBFeature implements LireFeature {
     // ORBFeature Default values:
-    private float scaleFactor = 1.2f; // Coefficient by which we divide the dimensions from one scale pyramid level to the next
-    private int nLevels      = 8;   // The number of levels in the scale pyramid
-    private int firstLevel   = 0;   // The level at which the image is given
-    private int edgeThreshold = 31;  // How far from the boundary the points should be.
-    private int patchSize     = 31;  // You can not change this, it is allways 31
-
-    private int WTA_K = 2;           // How many random points are used to produce each cell of the descriptor (2, 3, 4 ...)
-    private int scoreType = 0;           // 0 for HARRIS_SCORE / 1 for FAST_SCORE
-    private int nFeatures = 500;        // not sure if 500 is default
+    private static float scaleFactor = 1.2f; // Coefficient by which we divide the dimensions from one scale pyramid level to the next
+    private static int nLevels      = 8;   // The number of levels in the scale pyramid
+    private static int firstLevel   = 0;   // The level at which the image is given
+    private static int edgeThreshold = 31;  // How far from the boundary the points should be.
+    private static int patchSize     = 31;  // You can not change this, it is allways 31
+    private static int WTA_K = 2;           // How many random points are used to produce each cell of the descriptor (2, 3, 4 ...)
+    private static int scoreType = 0;           // 0 for HARRIS_SCORE / 1 for FAST_SCORE
+    private static int nFeatures = 500;        // not sure if 500 is default
 
     private FeatureDetector detector;
     private DescriptorExtractor extractor;
@@ -49,6 +51,7 @@ public class ORBFeature implements LireFeature {
     private float size;
     private double[] feature;
 
+    private static String yamlPath;
 
     public ORBFeature() {
         init();
@@ -63,23 +66,29 @@ public class ORBFeature implements LireFeature {
         feature = feat;
     }
 
-    private void init() {
+    static {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        detector = FeatureDetector.create(FeatureDetector.ORB);
-        extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
         try {
             File temp = File.createTempFile("tempFile", ".tmp");
             String settings = "%YAML:1.0\nscaleFactor: " + getScaleFactor() + "\nnLevels: " + getnLevels() + "\nfirstLevel: " + getFirstLevel() + " \nedgeThreshold: " + getEdgeThreshold() + "\npatchSize: " + getPatchSize() + "\nWTA_K: " + getWTA_K() + "\nscoreType: " + getScoreType() + "\nnFeatures: " + getnFeatures();
             FileWriter writer = new FileWriter(temp, false);
             writer.write(settings);
             writer.close();
-            extractor.read(temp.getPath());
-            detector.read(temp.getPath());
+            yamlPath = temp.getPath();
             temp.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void init() {
+
+        detector = FeatureDetector.create(FeatureDetector.ORB);
+        extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+            extractor.read(yamlPath);
+            detector.read(yamlPath);
+
     }
 
     @Override
@@ -89,7 +98,17 @@ public class ORBFeature implements LireFeature {
 
     @Override
     public byte[] getByteArrayRepresentation() {
-        return new byte[0];
+        if(_features == null) {
+            return SerializationUtils.toByteArray(feature);
+        } else {
+            byte[] tmp, featureBytes = new byte[_features.size() * 256];
+            for (int index = 0; index < _features.size(); index++) {
+                ORBFeature feature = _features.get(index);
+                tmp = feature.getByteArrayRepresentation();
+                System.arraycopy(tmp, 0, featureBytes, index * 256, 256);
+            }
+            return featureBytes;
+        }
     }
 
     @Override
@@ -99,12 +118,27 @@ public class ORBFeature implements LireFeature {
 
     @Override
     public double[] getDoubleHistogram() {
-        return new double[0];
+        return feature;
+    }
+
+    public LinkedList<ORBFeature> getFeatures() {
+        return _features;
     }
 
     @Override
-    public float getDistance(LireFeature feature) {
-        return 0;
+    public float getDistance(LireFeature otherFeature) {
+        if (!(otherFeature instanceof ORBFeature)) return -1;
+        if(_features == null) {
+            return (float) MetricsUtils.distL2(this.feature, ((ORBFeature) otherFeature).feature);
+        } else {
+            float sum = 0.0f;
+
+            LinkedList<ORBFeature> otherFeatures = ((ORBFeature) otherFeature).getFeatures();
+            for(int index=0; index < _features.size(); index++) {
+                sum += _features.get(index).getDistance((otherFeatures.get(index)));
+            }
+            return (float)Math.sqrt(sum);
+        }
     }
 
     @Override
@@ -130,7 +164,7 @@ public class ORBFeature implements LireFeature {
         extractor.compute(matGray, _keyPoints, descriptors);
         myKeys = _keyPoints.toList();
 
-        _features = new LinkedList<ORBFeature>();
+        _features = new LinkedList<>();
         KeyPoint key;
         ORBFeature feat;
         double[] desc;
@@ -150,7 +184,18 @@ public class ORBFeature implements LireFeature {
 
     @Override
     public void setByteArrayRepresentation(byte[] featureData) {
-
+        if(featureData.length > 256) {
+            byte[] tmp;
+            for(int index=0; index < featureData.length; index += 256) {
+                tmp = new byte[256];
+                System.arraycopy(featureData, index, tmp, 0, 256);
+                ORBFeature orbf = new ORBFeature();
+                orbf.setByteArrayRepresentation(tmp);
+                _features.add(orbf);
+            }
+        } else {
+            feature = SerializationUtils.toDoubleArray(featureData);
+        }
     }
 
     @Override
@@ -166,67 +211,67 @@ public class ORBFeature implements LireFeature {
     /*
     ORBFeature parameter field accessors
      */
-    public float getScaleFactor() {
+    public static float getScaleFactor() {
         return scaleFactor;
     }
 
-    public void setScaleFactor(float scaleFactor) {
-        this.scaleFactor = scaleFactor;
+    public static void setScaleFactor(float value) {
+        scaleFactor = value;
     }
 
-    public int getnLevels() {
+    public static int getnLevels() {
         return nLevels;
     }
 
-    public void setnLevels(int nLevels) {
-        this.nLevels = nLevels;
+    public static void setnLevels(int value) {
+        nLevels = value;
     }
 
-    public int getFirstLevel() {
+    public static int getFirstLevel() {
         return firstLevel;
     }
 
-    public void setFirstLevel(int firstLevel) {
-        this.firstLevel = firstLevel;
+    public static void setFirstLevel(int value) {
+        firstLevel = value;
     }
 
-    public int getEdgeThreshold() {
+    public static int getEdgeThreshold() {
         return edgeThreshold;
     }
 
-    public void setEdgeThreshold(int edgeThreshold) {
-        this.edgeThreshold = edgeThreshold;
+    public static void setEdgeThreshold(int value) {
+        edgeThreshold = value;
     }
 
-    public int getPatchSize() {
+    public static int getPatchSize() {
         return patchSize;
     }
 
-    public void setPatchSize(int patchSize) {
-        this.patchSize = patchSize;
+    public static void setPatchSize(int value) {
+        patchSize = value;
     }
 
-    public int getWTA_K() {
+    public static int getWTA_K() {
         return WTA_K;
     }
 
-    public void setWTA_K(int WTA_K) {
-        this.WTA_K = WTA_K;
+    public static void setWTA_K(int value) {
+        WTA_K = value;
     }
 
-    public int getScoreType() {
+    public static int getScoreType() {
         return scoreType;
     }
 
-    public void setScoreType(int scoreType) {
-        this.scoreType = scoreType;
+    public static void setScoreType(int value) {
+        scoreType = value;
     }
 
-    public int getnFeatures() {
+    public static int getnFeatures() {
         return nFeatures;
     }
 
-    public void setnFeatures(int nFeatures) {
-        this.nFeatures = nFeatures;
+    public static void setnFeatures(int value) {
+        nFeatures = value;
     }
 }
