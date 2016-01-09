@@ -164,7 +164,7 @@ public class ORBFeature implements LireFeature {
         extractor.compute(matGray, _keyPoints, descriptors);
         myKeys = _keyPoints.toList();
 
-        _features = new LinkedList<>();
+        _features = new LinkedList<ORBFeature>();
         KeyPoint key;
         ORBFeature feat;
         double[] desc;
