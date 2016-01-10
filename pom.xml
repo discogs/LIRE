@@ -49,7 +49,7 @@
 
 	<groupId>com.discogs</groupId>
 	<artifactId>lire</artifactId>
-	<version>0.9.7-DISCOGS-M9</version>
+	<version>0.9.7-DISCOGS-M10</version>
 	<packaging>jar</packaging>
 
 	<name>lire</name>
