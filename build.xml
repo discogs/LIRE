@@ -60,7 +60,7 @@
     <property name="config" value="src/main/config"/>
     <property name="build" value="classes"/>
     <property name="dist" value="dist"/>
-    <property name="versionstring" value="0.9.6-M3"/>
+    <property name="versionstring" value="0.9.7-DISCOGS-M7"/>
     <!-- path to test files -->
     <property name="test" value="test"/>
     <!-- path to documentation like README or CHANGES -->
