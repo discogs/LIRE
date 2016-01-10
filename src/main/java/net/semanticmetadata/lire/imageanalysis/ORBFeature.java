@@ -194,6 +194,7 @@ public class ORBFeature implements LireFeature {
     @Override
     public void setByteArrayRepresentation(byte[] featureData) {
         if(featureData.length > 256) {
+            _features = new LinkedList<ORBFeature>();
             byte[] tmp;
             for(int index=0; index < featureData.length; index += 256) {
                 tmp = new byte[256];
@@ -284,6 +285,9 @@ public class ORBFeature implements LireFeature {
         nFeatures = value;
     }
 
+    /*
+     ORBFeature value accessors
+     */
     public float getAngle() {
         return angle;
     }
