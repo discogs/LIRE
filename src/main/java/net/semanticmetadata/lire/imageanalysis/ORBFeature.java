@@ -86,9 +86,8 @@ public class ORBFeature implements LireFeature {
 
         detector = FeatureDetector.create(FeatureDetector.ORB);
         extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
-            extractor.read(yamlPath);
-            detector.read(yamlPath);
-
+        extractor.read(yamlPath);
+        detector.read(yamlPath);
     }
 
     @Override
@@ -118,7 +117,15 @@ public class ORBFeature implements LireFeature {
 
     @Override
     public double[] getDoubleHistogram() {
-        return feature;
+        if( _features == null) {
+            return feature;
+        } else {
+            double[] allFeatures = new double[_features.size() * 32];
+            for(int index=0; index < _features.size(); index++) {
+               System.arraycopy(_features.get(index).getDoubleHistogram(), 0, allFeatures, index * 32, 32);
+            }
+            return allFeatures;
+        }
     }
 
     public LinkedList<ORBFeature> getFeatures() {
