@@ -4,7 +4,6 @@ import net.semanticmetadata.lire.DocumentBuilder;
 
 import net.semanticmetadata.lire.utils.SerializationUtils;
 import net.semanticmetadata.lire.utils.MetricsUtils;
-import org.apache.commons.math3.util.MathArrays;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -21,7 +20,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
 
 /**
  * Created by seanwolfe on 1/6/16.
@@ -49,21 +47,21 @@ public class ORBFeature implements LireFeature {
     private double[] point;
     private float response;
     private float size;
-    private double[] feature;
+    private double[] descriptor;
 
     private static String yamlPath;
 
     public ORBFeature() {
         init();
     }
-    public ORBFeature(float ang, int cl, int o, double[] pt, float res, float s, double[] feat) {
-        angle = ang;
-        class_id = cl;
-        octave = o;
-        point = pt;
-        response = res;
-        size = s;
-        feature = feat;
+    public ORBFeature(float ang, int cl, int o, double[] pt, float res, float s, double[] desc) {
+        setAngle(ang);
+        setClass_id(cl);
+        setOctave(o);
+        setPoint(pt);
+        setResponse(res);
+        setSize(s);
+        setDescriptor(desc);
     }
 
     static {
@@ -98,7 +96,7 @@ public class ORBFeature implements LireFeature {
     @Override
     public byte[] getByteArrayRepresentation() {
         if(_features == null) {
-            return SerializationUtils.toByteArray(feature);
+            return SerializationUtils.toByteArray(getDescriptor());
         } else {
             byte[] tmp, featureBytes = new byte[_features.size() * 256];
             for (int index = 0; index < _features.size(); index++) {
@@ -118,13 +116,17 @@ public class ORBFeature implements LireFeature {
     @Override
     public double[] getDoubleHistogram() {
         if( _features == null) {
-            return feature;
+            return getDescriptor();
         } else {
-            double[] allFeatures = new double[_features.size() * 32];
-            for(int index=0; index < _features.size(); index++) {
-               System.arraycopy(_features.get(index).getDoubleHistogram(), 0, allFeatures, index * 32, 32);
+            double[] histogram = new double[_features.getFirst().getDescriptor().length];
+
+            for(int index=0; index < histogram.length; index++) {
+                double[] descHist = _features.get(index).getDoubleHistogram();
+                for(int bucket=0; bucket < histogram.length; bucket++) {
+                    histogram[bucket] += descHist[bucket];
+                }
             }
-            return allFeatures;
+            return histogram;
         }
     }
 
@@ -136,7 +138,7 @@ public class ORBFeature implements LireFeature {
     public float getDistance(LireFeature otherFeature) {
         if (!(otherFeature instanceof ORBFeature)) return -1;
         if(_features == null) {
-            return (float) MetricsUtils.distL2(this.feature, ((ORBFeature) otherFeature).feature);
+            return (float) MetricsUtils.distL2(this.getDescriptor(), ((ORBFeature) otherFeature).getDescriptor());
         } else {
             float sum = 0.0f;
 
@@ -201,7 +203,7 @@ public class ORBFeature implements LireFeature {
                 _features.add(orbf);
             }
         } else {
-            feature = SerializationUtils.toDoubleArray(featureData);
+            setDescriptor(SerializationUtils.toDoubleArray(featureData));
         }
     }
 
@@ -280,5 +282,61 @@ public class ORBFeature implements LireFeature {
 
     public static void setnFeatures(int value) {
         nFeatures = value;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
+    }
+
+    public int getClass_id() {
+        return class_id;
+    }
+
+    public void setClass_id(int class_id) {
+        this.class_id = class_id;
+    }
+
+    public int getOctave() {
+        return octave;
+    }
+
+    public void setOctave(int octave) {
+        this.octave = octave;
+    }
+
+    public double[] getPoint() {
+        return point;
+    }
+
+    public void setPoint(double[] point) {
+        this.point = point;
+    }
+
+    public float getResponse() {
+        return response;
+    }
+
+    public void setResponse(float response) {
+        this.response = response;
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public double[] getDescriptor() {
+        return descriptor;
+    }
+
+    public void setDescriptor(double[] descriptor) {
+        this.descriptor = descriptor;
     }
 }
