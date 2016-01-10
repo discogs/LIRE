@@ -144,7 +144,11 @@ public class ORBFeature implements LireFeature {
 
             LinkedList<ORBFeature> otherFeatures = ((ORBFeature) otherFeature).getFeatures();
             for(int index=0; index < _features.size(); index++) {
-                sum += _features.get(index).getDistance((otherFeatures.get(index)));
+                if(index < otherFeatures.size()) {
+                    sum += _features.get(index).getDistance((otherFeatures.get(index)));
+                } else {
+                    break;
+                }
             }
             return (float)Math.sqrt(sum);
         }
