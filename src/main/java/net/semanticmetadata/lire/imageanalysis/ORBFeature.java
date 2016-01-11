@@ -30,7 +30,7 @@ public class ORBFeature implements LireFeature {
     private static int nLevels      = 8;   // The number of levels in the scale pyramid
     private static int firstLevel   = 0;   // The level at which the image is given
     private static int edgeThreshold = 31;  // How far from the boundary the points should be.
-    private static int patchSize     = 31;  // You can not change this, it is allways 31
+    private static int patchSize     = 31;  // You can not change this, it is always 31
     private static int WTA_K = 2;           // How many random points are used to produce each cell of the descriptor (2, 3, 4 ...)
     private static int scoreType = 0;           // 0 for HARRIS_SCORE / 1 for FAST_SCORE
     private static int nFeatures = 500;        // not sure if 500 is default
@@ -48,6 +48,7 @@ public class ORBFeature implements LireFeature {
     private float response;
     private float size;
     private double[] descriptor;
+    private double[] rootORBDescriptor;
 
     private static String yamlPath;
 
@@ -62,6 +63,7 @@ public class ORBFeature implements LireFeature {
         setResponse(res);
         setSize(s);
         setDescriptor(desc);
+        setRootORBDescriptor(toRootORB(desc));
     }
 
     static {
@@ -81,7 +83,6 @@ public class ORBFeature implements LireFeature {
     }
 
     private void init() {
-
         detector = FeatureDetector.create(FeatureDetector.ORB);
         extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
         extractor.read(yamlPath);
@@ -222,6 +223,19 @@ public class ORBFeature implements LireFeature {
 
     }
 
+    private double[] toRootORB(double[] originalDescriptor) {
+        double max = 0;
+        int descriptorLength = originalDescriptor.length;
+        double[] newDescriptor = new double[descriptorLength];
+        for (int i = 0; i < descriptorLength; i++) {
+            max = Math.max(max, Math.abs(originalDescriptor[i]));
+        }
+        for (int i = 0; i < descriptorLength; i++) {
+            newDescriptor[i] = Math.sqrt(Math.abs(originalDescriptor[i])/max);
+        }
+        return newDescriptor;
+    }
+
     /*
     ORBFeature parameter field accessors
      */
@@ -346,5 +360,13 @@ public class ORBFeature implements LireFeature {
 
     public void setDescriptor(double[] descriptor) {
         this.descriptor = descriptor;
+    }
+
+    public double[] getRootORBDescriptor() {
+        return rootORBDescriptor;
+    }
+
+    public void setRootORBDescriptor(double[] rootORBDescriptor) {
+        this.rootORBDescriptor = rootORBDescriptor;
     }
 }
